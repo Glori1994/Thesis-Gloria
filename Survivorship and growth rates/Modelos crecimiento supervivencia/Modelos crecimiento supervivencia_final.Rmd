@@ -1,0 +1,101 @@
+---
+title: "Modelos crecimiento supervivencia"
+author: "Gloria Mariño Briceño"
+date: "6/25/2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(ggplot2)
+require(piecewiseSEM)
+require(effects)
+```
+
+## Supervivencia de juveniles
+
+### Pregunta
+
+¿Hay diferencias en la supervivencia de los corales juveniles dependiendo de su tasa de y/o su género crecimiento promedio?
+
+
+### Hipótesis
+
+Dados los diferentes géneros y las distintas tasas medias de crecimiento, se espera que se encuentren diferencias entre las probabilidades de supervivencia de los juveniles de coral de distintos géneros y tasas de crecimiento.
+
+
+### Datos
+
+Se construyó una matriz de datos considerando los distintos géneros de los juveniles de coral, la supervivencia de los individuos y la tasa media de creciemiento. 
+
+
+```{r lectura, echo =  FALSE, warning=F}
+library(readxl)
+
+matriz <- read_xlsx("tc intervalos 4-1.xlsx", sheet = 3)
+str(matriz)
+```
+
+```{r, echo =  FALSE}
+head(as.data.frame(matriz))
+```
+La variable **Survived** representa la supervivencia por individuo hasta el último tiempo de muestreo. Cuando un individuo detectado en el primer tiempo de muestreo no fue encontrado en el último tiempo, se colocó **0** (i.e., no sobrevivió) y cuando aun se encontraba alli como **1** (sobrevivió)
+
+Ademas de esto, se midió la profundidad promedio de cada transecta y el tipo de sustrato asociado directamente a cada squidpop. Por lo tanto, la profundidad fue incluida en el modelo lineal generalizado y se estimaron los efectos parciales del factor sitio y la profundidad.
+
+*Variables meaning:*
+
+**Eaten_1h** *Variable binaria que indica que ocurrió supervivencia. 0 significa **NO**, 1 significa supervivencia*  
+
+**Genera** *factor con 5 niveles (Agaricia/Orbicella/Pseudodiploria/Porites/Siderastrea/)*
+
+**Mean** *Variable continua, indica la tasa media de crecimiento de cada individuo durante los 18 meses del experimento*
+
+NOTA 1: La variable individuo no se utilizó para este análisis.
+NOTA2: Se decidió eliminar Colpophyllia de estos análisis porque tenía menos de tres individuos juveniles en total. 
+
+
+
+### Analisis de Datos-Data analysis
+
+Para demostrar si existian diferencias entre la supervivencia de los individuos dependiendo de su identidad y creciemiento, se contruyó un **Modelo Lineal Generalizado (GLM)**. El cual, dada las caracteristicas de la variable respuesta y los predictores utilizados permite conocer la diferencia en porcentaje o probabilidad de supervivencia dependiendo del género o la tasa media de creciemiento. 
+
+Se decidio usar un **GLM** en contraste con un **ANOVA** o un **Modelo Lineal convencional** debido a que este permite un mejor manejo de datos desbalanceados, sin distribucion normal. Ademas permite usar una distribucion de enlace que linealiza la respuesta binomial caracteristica de la variable de depredacion **Eaten_1h**.
+
+
+### Resultados
+```{r}
+# convert Site to a factor
+#matrizorig <- matriz 
+
+matriz <- matriz[matriz$Genera != "Colpophylia", ] #Decidimos quitar colpophyllia porque tenia menos de 3 individuos.
+matriz$Genera <- factor(matriz$Genera, levels = levels(factor(matriz$Genera))[c(2:5, 1)])
+
+str(matriz)
+
+table(matriz$Genera)
+  
+#Check class of Genera and Mean
+sapply(matriz, class)
+
+# run generalized linear model supervivencia dependiendo del género (genera) y la tasa de creciemiento (Mean)
+final.glm <- glm(Survived ~ Mean +Genera, family = "binomial", data = matriz)
+
+# extract summary
+summary(final.glm)
+
+
+odds <- exp(coef(final.glm))
+odds
+odds/(odds+1)
+```
+
+
+Por ultimo, pudimos calcular el R2 del modelo utilizado, arrojando un valor de:
+```{r}
+# get R-squared for the model
+rsquared(final.glm)
+```
+Este nos indica que la tasa media de creciemiento es capaz de explicar un 66% de las variaciones observadas en la supervivencia de los juveniles.
+

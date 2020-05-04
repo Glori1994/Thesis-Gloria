@@ -1,0 +1,3 @@
+"0","library(readxl)"
+"0",""
+"0","squidpops <- read_xlsx(""Squidpops_assay.xlsx"", sheet = 5)"

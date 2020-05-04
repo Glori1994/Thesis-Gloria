@@ -1,0 +1,8 @@
+"0","# plot model-estimated means and standard errors (partial effects)"
+"0",""
+"0","# run generalized linear model,"
+"0","i.final.glm <- glm(Survived ~ Genera, family = ""binomial"", data = matriz)"
+"0","plot(allEffects(i.final.glm))"
+"2","Error in UseMethod(""droplevels"") : 
+  no applicable method for 'droplevels' applied to an object of class ""character""
+"

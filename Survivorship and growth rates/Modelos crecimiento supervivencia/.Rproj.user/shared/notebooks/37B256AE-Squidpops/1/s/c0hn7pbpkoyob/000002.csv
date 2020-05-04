@@ -1,0 +1,5 @@
+"0","# plot raw means and standard errors"
+"0","library(ggplot2)"
+"0","ggplot(squidpops, aes(x = Depth, y = (1 - Eaten_1_hour), group = Site, col = Site)) +"
+"0","  stat_summary() +"
+"0","  theme_bw()"

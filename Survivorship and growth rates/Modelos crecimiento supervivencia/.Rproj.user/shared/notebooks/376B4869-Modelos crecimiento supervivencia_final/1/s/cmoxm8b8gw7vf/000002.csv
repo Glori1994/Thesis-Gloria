@@ -1,0 +1,5 @@
+"0","# plot raw means and standard errors"
+"0","library(ggplot2)"
+"0","ggplot(matriz, aes(x = Mean, y = Survived, group = Survived, col= Survived)) +"
+"0","  stat_summary() +"
+"0","  theme_bw()"

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549461533675.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4292C56D",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1549461533675,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "929F4657",
+        "caption" : "Final_casi",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Final_casi&cache_key=929F4657",
+        "displayedObservations" : 32,
+        "environment" : "",
+        "object" : "Final_casi",
+        "preview" : 0,
+        "totalObservations" : 32,
+        "variables" : 33
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

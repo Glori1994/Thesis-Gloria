@@ -1,0 +1,1 @@
+This folder contains (1) the script for the ANOVA to check correlation between growth rates and genera, (2) the script for the logistic model to test probability of survivorship of juvenile corals (3) the matrix with growth rates data

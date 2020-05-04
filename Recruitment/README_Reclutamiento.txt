@@ -1,0 +1,1 @@
+This folder contains (1) The script which generates the graphics for abundance of recruits and survivorship of recruits (2) Recruitment matrix ("Reclutamiento").

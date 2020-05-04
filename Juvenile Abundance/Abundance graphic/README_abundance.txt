@@ -1,0 +1,1 @@
+This folder contains (1) The script for the abundance of juveniles by time (2) The script for counting the total of coral juvenile individuals (3) Matriz madre, which is the matrix with all the abundance data from the juveniles.

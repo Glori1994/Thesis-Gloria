@@ -1,0 +1,135 @@
+---
+title: "Ensayo de Squidpops en el PNN Tayrona"
+author: "AL, GM, AA"
+date: "May 16, 2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(ggplot2)
+require(piecewiseSEM)
+require(effects)
+```
+
+## Ensayo de Depredacion: Metodo de Squidpops
+
+Se realizo un ensayo utilizando la metodologia propuesta por MarineGeo para estimar la tasa de depredacion de peces asociados a **pastos marinos**, cerca de un manglar y cerca de corales.
+
+### Pregunta
+
+¿Hay diferencias en la intensidad de depredación entre sitios de pastos marinos con manglar y sitios de pastos marinos con corales?
+
+*Is there any difference in predation intensity between seagrass/mangroves sites and seagrass/coral sites?*
+
+### Hipótesis
+
+Dadas las condiciones ambientales diferentes entre Pasto Marino asociado a coral y el pasto asociado a manglar, esperamos encontrar diferencias en la intensidad de depredacion entre ambos tipos de sitios.
+
+*Given the environmental differences between seagrass associated to mangrove and seagrass associated to coral, we expect to find differences in predation intensity between both sites*
+
+### Datos
+
+Se construyó una matriz de datos considerando 4 transectas por sitio (cerca de coral o cerca de manglar), y en cada una se colocaron aproximadamente 25 Squidpops cuando fue posible.
+
+*We built a data matrix considering four transects per site (near coral or near mangrove), and in each one we put 25 Squidpops when it was possible.*
+
+```{r lectura, echo =  FALSE, warning=F}
+library(readxl)
+
+squidpops <- read_xlsx("Squidpops_assay.xlsx", sheet = 5)
+```
+
+```{r, echo =  FALSE}
+head(as.data.frame(squidpops[, -8]))
+```
+
+La variable **Eaten_1h** representa la interacción de depredación una hora despues de la instalación de cada transecta. Cuando la carnada no fue encontrada en el squidpop se marco como **0** y cuando aun se encontraba alli como **1**
+
+Ademas de esto, se midió la profundidad promedio de cada transecta y el tipo de sustrato asociado directamente a cada squidpop. Por lo tanto, la profundidad fue incluida en el modelo lineal generalizado y se estimaron los efectos parciales del factor sitio y la profundidad.
+
+*Variables meaning:*
+
+**Eaten_1h** *Binary variable indicates predation interaction at one hour. 0 Means **NO** Squidpop (predation occured) and 1 Means Squidpop present (predation didn't occurred)*
+
+**Site** *factor with two levels (Seagrass/Mangrove; Seagrass/Coral)*
+
+**Depth** *Continuous variable, indicates mean depth of the squidpops in one transect*
+
+
+
+### Analisis de Datos-Data analysis
+
+Para demostrar si existian diferencias entre la intensidad de depredacion dados los tipos de ambiente, se contruyó un **Modelo Lineal Generalizado (GLM)**. El cual, dada las caracteristicas de la variable respuesta y los predictores utilizados permite conocer la diferencia en porcentaje o probabilidad de depredacion de squidpops entre sitios.
+
+Se decidio usar un **GLM** en contraste con un **ANOVA** o un **Modelo Lineal convencional** debido a que este permite un mejor manejo de datos desbalanceados, sin distribucion normal. Ademas permite usar una distribucion de enlace que linealiza la respuesta binomial caracteristica de la variable de depredacion **Eaten_1h**.
+
+*To show if there were differences in the predation intensity given the different environments, we built a GLM. It allowed us to know the differences in percentage or probability of predation of squidpops between sites. A GLM was used because it allows for a better management of unbalanced data, without normal distribution. Additionally it uses a link function that linealizes the binomial response of our binary predation measurement*
+
+
+### Resultados
+```{r}
+# convert Site to a factor
+squidpops$Site <- factor(squidpops$Site)
+
+# run generalized linear model
+final.glm <- glm(Eaten_1_hour ~ Site + Depth, family = "binomial", data = squidpops)
+
+# extract summary
+summary(final.glm)
+
+```
+
+Estos resultados permiten afirmar que existen diferencias estadisticamente significativas en la intensidad de depredacion dadas por el tipo de ambiente. El estimado de **4.0258** para SiteSeagrass_Mangrove nos indica que hubo una mayor presencia de squidpops (**Eaten_1h = 1**) en los pastos con manglar que en los pastos con coral.
+
+No se encontraron diferencias estadisticamente significativas atribuibles a la profundidad.
+
+Ahora, utilizando una transformacion exponencial del estimado observado, podemos calcular la diferencia en la proporcion de depredacion entre tipos de ambiente.
+
+*This results showed statistically significant differences in predation intensity between sites. The value **4.0258** for Site Seagrass_Mangrove estimate indicated that there were more Squidpops present (**Eaten_1h = 1**)in seagrass_mangrove than in seagrass_coral.*
+
+```{r}
+# interpret coefficients as % change (instead of log odds ratio)
+
+exp(coef(final.glm))
+```
+
+De esta manera, podemos afirmar que es 56 veces mas probable encontrar squidpops no depredados en pastos asociados con el manglar que en pastos asociados a corales.
+
+*Using an exponential transformation for the estimates, We can say that squidpops are 56 times more probable to be found in mangrove seagrasss, than in coral seagrass.*
+
+```{r}
+# plot model-estimated means and standard errors (partial effects)
+
+# run generalized linear model, with Eaten_1h inverted
+inverse.final.glm <- glm((1 - Eaten_1_hour) ~ Site + Depth, family = "binomial", data = squidpops)
+plot(allEffects(inverse.final.glm))
+```
+
+La intensidad de depredación es mayor en los pastos marinos asociados a coral (**0.79**), que en los pastos marinos asociados a manglar (**0.064**). 
+
+
+*The predation intensity was higher in seagrass coral (**0.79**) than in seagrass mangrove (**0.064**)*
+
+```{r}
+# plot raw means and standard errors
+library(ggplot2)
+ggplot(squidpops, aes(x = Depth, y = (1 - Eaten_1_hour), group = Site, col = Site)) +
+  stat_summary() +
+  theme_bw()
+```
+Al mostrar graficamente la proporcion de squidpops comidos en cada sitio y profundidad medidas, podemos observar efectivamente que no existen diferencias dada la profundidad a la que se colocaron los squidpops.
+
+*The proportion of eaten squidpops didn't show statistically significant differences given depth*
+
+
+Por ultimo, pudimos calcular el R2 del modelo utilizado, arrojando un valor de:
+```{r}
+# get R-squared for the model
+rsquared(final.glm)
+```
+
+Este nos indica que el sitio junto a la profundidad son capaces de explicar un 53% de las variaciones observadas en la depredacion de los squidpops.

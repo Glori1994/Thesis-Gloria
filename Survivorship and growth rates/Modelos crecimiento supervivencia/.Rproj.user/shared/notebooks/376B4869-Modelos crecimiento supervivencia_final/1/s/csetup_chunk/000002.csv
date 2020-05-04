@@ -1,0 +1,33 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","require(ggplot2)"
+"2","Loading required package: ggplot2
+"
+"0","require(piecewiseSEM)"
+"2","Loading required package: piecewiseSEM
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 methods overwritten by 'lme4':
+  method                          from
+  cooks.distance.influence.merMod car 
+  influence.merMod                car 
+  dfbeta.influence.merMod         car 
+  dfbetas.influence.merMod        car 
+"
+"2","
+  This is piecewiseSEM version 2.0.2
+
+  If you have used the package before, it is strongly recommended you read Section 3 of the vignette('piecewiseSEM') to familiarize yourself with the new syntax
+
+  Questions or bugs can be addressed to <jlefcheck@bigelow.org>
+"
+"0","require(effects)"
+"2","Loading required package: effects
+"
+"2","Loading required package: carData
+"
+"2","lattice theme set by effectsTheme()
+See ?effectsTheme for details.
+"

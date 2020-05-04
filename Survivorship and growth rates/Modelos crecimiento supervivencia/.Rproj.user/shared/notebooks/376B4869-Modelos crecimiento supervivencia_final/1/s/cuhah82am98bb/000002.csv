@@ -1,0 +1,7 @@
+"0","# plot model-estimated means and standard errors (partial effects)"
+"0",""
+"0","# run generalized linear model,"
+"0","i.final.glm <- glm(Survived ~ Mean, family = ""binomial"", data = matriz)"
+"2","glm.fit: fitted probabilities numerically 0 or 1 occurred"
+"0","plot(allEffects(i.final.glm))"
+"0",""

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564061693632.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1414685934",
+    "id" : "3D381FE2",
+    "lastKnownWriteTime" : 1560974367,
+    "last_content_update" : 1586572810400,
+    "path" : "C:/Users/Gloria/Desktop/Tesis/Resultados/Supervivencia/Modelos Jon/Ejemplo Squidpops/Squidpops.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "134,0",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

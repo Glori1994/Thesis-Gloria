@@ -1,0 +1,4 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","require(ggplot2)"
+"0","require(piecewiseSEM)"
+"0","require(effects)"

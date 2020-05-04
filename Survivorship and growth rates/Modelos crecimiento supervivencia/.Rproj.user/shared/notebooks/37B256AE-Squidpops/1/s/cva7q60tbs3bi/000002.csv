@@ -1,0 +1,5 @@
+"0","# plot model-estimated means and standard errors (partial effects)"
+"0",""
+"0","# run generalized linear model, with Eaten_1h inverted"
+"0","inverse.final.glm <- glm((1 - Eaten_1_hour) ~ Site + Depth, family = ""binomial"", data = squidpops)"
+"0","plot(allEffects(inverse.final.glm))"
