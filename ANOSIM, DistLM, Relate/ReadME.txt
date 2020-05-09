@@ -1,0 +1,1 @@
+This folder contains the workspace for the DistLM, ANOSIM and Relate analysis. This workspace is for Primer V6 + PERMANOVA.
